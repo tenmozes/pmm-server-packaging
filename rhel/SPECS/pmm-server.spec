@@ -63,6 +63,7 @@ mv tmpfiles.d-pmm.conf %{buildroot}%{_sysconfdir}/tmpfiles.d/pmm.conf
 mv sysconfig %{buildroot}%{_sysconfdir}/sysconfig
 mv orchestrator.conf.json %{buildroot}%{_sysconfdir}/orchestrator.conf.json
 mv prometheus.yml %{buildroot}%{_sysconfdir}/prometheus.yml
+mv cpu_total.rules %{buildroot}%{_sysconfdir}/cpu_total.rules
 
 install -d %{buildroot}%{_sysconfdir}/clickhouse-server
 mv clickhouse.xml %{buildroot}%{_sysconfdir}/clickhouse-server/config.xml
