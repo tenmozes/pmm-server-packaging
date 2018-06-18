@@ -114,6 +114,9 @@ install -p -m 0644 node_exporter.service %{buildroot}/usr/lib/systemd/system/nod
 
 
 %changelog
+* Mon May 18 2018 Vadim Yalovets <vadim.yalovets@percona.com> - 1.9.0-10
+- PMM-2570 Recording rules evaluation 
+
 * Wed Mar 21 2018 Mykola Marzhan <mykola.marzhan@percona.com> - 1.9.0-10
 - PMM-1823 add password page compilation
 
