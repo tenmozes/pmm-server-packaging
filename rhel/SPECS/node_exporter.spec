@@ -265,6 +265,9 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace:%{gopath}
 %endif
 
 %changelog
+* Fri Jun 22 2018 Vadim Yalovets <vadim.yalovets@percona.com> - 0.13.0-0.git006d1c7
+- PMM-2651 Monitoring directory/file sizes with the Textfile Collector 
+
 * Tue Dec 13 2016 Mykola Marzhan <mykola.marzhan@percona.com> - 0.13.0-0.git006d1c7
 - First package
 
