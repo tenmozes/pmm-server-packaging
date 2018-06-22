@@ -42,6 +42,7 @@ License:        ASL 2.0
 URL:            https://%{provider_prefix}
 Source0:        https://%{provider_prefix}/archive/%{commit}/%{repo}-%{shortcommit}.tar.gz
 Source1:	%{repo}.service
+Source2:	files_size.cron
 
 %if 0%{?fedora} || 0%{?rhel} == 7
 BuildRequires: systemd
@@ -169,7 +170,9 @@ gobuild -o bin/%{repo} %{import_path}
 # consul subpackage
 install -D -p -m 0755 bin/%{repo} %{buildroot}%{_sbindir}/%{repo}
 install -d %{buildroot}/usr/lib/systemd/system
+install -d %{buildroot}/etc/cron.d
 install -p -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/%{repo}.service
+install -p -m 0644 %{SOURCE2} %{buildroot}/etc/cron.d/files_size.cron
 
 
 %if 0%{?with_devel} || ! 0%{?with_bundled}
@@ -232,6 +235,7 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace:%{gopath}
 %post
 %systemd_post %{repo}.service
 
+
 %preun
 %systemd_preun %{repo}.service
 
@@ -244,6 +248,7 @@ export GOPATH=%{buildroot}/%{gopath}:$(pwd)/Godeps/_workspace:%{gopath}
 %doc CHANGELOG.md README.md
 %{_sbindir}/%{repo}
 /usr/lib/systemd/system/%{repo}.service
+/etc/cron.d/files_size.cron
 
 %if 0%{?with_devel} || ! 0%{?with_bundled}
 %files -n golang-%{provider}-%{project}-%{repo}-devel -f devel.file-list
