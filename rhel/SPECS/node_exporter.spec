@@ -156,6 +156,7 @@ function gobuild { eval ${GOCOMPILER} -a -v -x "$@"; }
 # set working directory
 mkdir -p src/%{provider}.%{provider_tld}/%{project}
 ln -s ../../../ src/%{provider}.%{provider_tld}/%{project}/%{repo}
+mkdir -p /var/lib/node_exporter/textfile_collector
 
 %if ! 0%{?with_bundled}
 export GOPATH=$(pwd):%{gopath}
