@@ -11,7 +11,7 @@
 %global pmm_prefix      %{provider}.%{provider_tld}/%{project}/%{pmm_repo}
 %global pmm_commit      @@pmm_commit@@
 %global pmm_shortcommit %(c=%{pmm_commit}; echo ${c:0:7})
-%define release         11
+%define release         16
 %define rpm_release     %{release}.%{build_timestamp}.%{shortcommit}%{?dist}
 
 Name:		%{repo}
@@ -28,14 +28,6 @@ BuildArch:	noarch
 Requires:	nginx ansible git bats
 BuildRequires:	openssl
 
-%if 0%{?fedora} || 0%{?rhel} == 7
-BuildRequires: systemd
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
-%endif
-
-
 %description
 Percona Monitoring and Management (PMM) Server.
 See the PMM docs for more information.
@@ -43,22 +35,16 @@ See the PMM docs for more information.
 
 %prep
 %setup -q -n %{repo}-%{commit}
-echo "${SERVER_USER:-pmm}:$(openssl passwd -apr1 ${SERVER_PASSWORD:-pmm})" > .htpasswd
-sed -i "s/v[0-9].[0-9].[0-9]/v%{version}/" landing-page/index.html
 
 
 %install
 tar -zxvf %SOURCE1
 install -d %{buildroot}%{_sysconfdir}/nginx/conf.d
-mv .htpasswd  %{buildroot}%{_sysconfdir}/nginx/.htpasswd
 mv nginx.conf %{buildroot}%{_sysconfdir}/nginx/conf.d/pmm.conf
 mv nginx-ssl.conf %{buildroot}%{_sysconfdir}/nginx/conf.d/pmm-ssl.conf
 install -d %{buildroot}%{_datadir}/percona-dashboards
 mv import-dashboards.py %{buildroot}%{_datadir}/percona-dashboards/import-dashboards.py
-install -d %{buildroot}%{_sysconfdir}/tmpfiles.d
-mv tmpfiles.d-pmm.conf %{buildroot}%{_sysconfdir}/tmpfiles.d/pmm.conf
 
-mv sysconfig %{buildroot}%{_sysconfdir}/sysconfig
 mv prometheus.yml %{buildroot}%{_sysconfdir}/prometheus.yml
 
 install -d %{buildroot}%{_sysconfdir}/clickhouse-server
@@ -68,26 +54,18 @@ mv supervisord.conf %{buildroot}%{_sysconfdir}/supervisord.d/pmm.ini
 
 install -d %{buildroot}%{_datadir}/%{name}/landing-page/img
 cp -pav ./entrypoint.sh %{buildroot}%{_datadir}/%{name}/entrypoint.sh
-cp -pav ./password-page/dist %{buildroot}%{_datadir}/%{name}/password-page
 cp -pav ./landing-page/img/pmm-logo.svg %{buildroot}%{_datadir}/%{name}/landing-page/img/pmm-logo.svg
 cp -pav ./%{pmm_repo}-%{pmm_commit}/api/swagger %{buildroot}%{_datadir}/%{name}/swagger
 rm -rf %{pmm_repo}-%{pmm_commit}
 
 
-%post
-/usr/bin/systemd-tmpfiles --create
-
-
 %files
 %license LICENSE
 %doc README.md CHANGELOG.md
-%{_sysconfdir}/sysconfig
 %{_sysconfdir}/supervisord.d
 %{_sysconfdir}/prometheus.yml
-%{_sysconfdir}/nginx/.htpasswd
 %{_sysconfdir}/nginx/conf.d/pmm.conf
 %{_sysconfdir}/nginx/conf.d/pmm-ssl.conf
-%{_sysconfdir}/tmpfiles.d/pmm.conf
 %{_datadir}/percona-dashboards/import-dashboards.py*
 %{_datadir}/%{name}
 
