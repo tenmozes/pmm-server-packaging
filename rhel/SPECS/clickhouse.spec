@@ -6,7 +6,7 @@
 
 Name:           percona-clickhouse
 Version:        19.7.5.27
-Release:        stable%{?dist}
+Release:        2%{?dist}
 Summary:        A free analytic DBMS for big data
 Group:          Applications/Databases
 License:        Apache-2.0
@@ -168,6 +168,9 @@ exit 0
 
 
 %changelog
+* Mon Jan 27 2020 Vadim Yalovets <vadim.yalovets@percona.com> - 19.7.5.27-2
+- PMM-5292 Reduce amount and size of ClickHouse logs
+
 * Thu Jun 27 2019 Vadim Yalovets <vadim.yalovets@percona.com> - 19.7.5.27-stable
 - PMM-4265 Clickhouse update
 
