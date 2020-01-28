@@ -1,12 +1,12 @@
 %define clickhouse_user clickhouse
 %define clickhouse_group clickhouse
 
-%global commit             a5e7582deace39619708a5690adcec7c20062edb 
+%global commit             7644735302c3275ed5424f6cd0dd13c4bff59d50 
 %global shortcommit        %(c=%{commit}; echo ${c:0:7})
 
 Name:           percona-clickhouse
-Version:        19.7.5.27
-Release:        2%{?dist}
+Version:        19.16.10.44
+Release:        stable%{?dist}
 Summary:        A free analytic DBMS for big data
 Group:          Applications/Databases
 License:        Apache-2.0
